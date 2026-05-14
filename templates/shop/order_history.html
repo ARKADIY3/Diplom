@@ -1,0 +1,93 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}История заказов - СтройМаркет{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li><a href="{% url 'profile' %}">Личный кабинет</a></li>
+                <li class="active">История заказов</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{% url 'profile' %}" class="list-group-item">
+                    <i class="fa fa-user"></i> Личный кабинет
+                </a>
+                <a href="{% url 'order_history' %}" class="list-group-item active">
+                    <i class="fa fa-history"></i> История заказов
+                </a>
+                <a href="{% url 'logout' %}" class="list-group-item">
+                    <i class="fa fa-sign-out"></i> Выйти
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-history"></i> История заказов</h3>
+                </div>
+                <div class="panel-body">
+                    {% if orders %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>№ заказа</th>
+                                    <th>Дата</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ order.total_price }} ₽</td>
+                                    <td>
+                                        {% if order.status == 'new' %}
+                                        <span class="label label-primary">Новый</span>
+                                        {% elif order.status == 'processing' %}
+                                        <span class="label label-warning">В обработке</span>
+                                        {% elif order.status == 'shipped' %}
+                                        <span class="label label-info">Отправлен</span>
+                                        {% elif order.status == 'delivered' %}
+                                        <span class="label label-success">Доставлен</span>
+                                        {% elif order.status == 'cancelled' %}
+                                        <span class="label label-danger">Отменён</span>
+                                        {% endif %}
+                                     </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="alert('Детали заказа #{{ order.id }}\nСумма: {{ order.total_price }} ₽\nСтатус: {{ order.get_status_display }}')">
+                                            <i class="fa fa-eye"></i> Детали
+                                        </button>
+                                     </td>
+                                 </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle"></i> У вас пока нет заказов.
+                    </div>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">
+                        <i class="fa fa-shopping-cart"></i> Перейти в каталог
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

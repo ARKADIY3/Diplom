@@ -1,0 +1,64 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Личный кабинет - СтройМаркет{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li class="active">Личный кабинет</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{% url 'profile' %}" class="list-group-item active">
+                    <i class="fa fa-user"></i> Личный кабинет
+                </a>
+                <a href="{% url 'order_history' %}" class="list-group-item">
+                    <i class="fa fa-history"></i> История заказов
+                </a>
+                <a href="{% url 'logout' %}" class="list-group-item">
+                    <i class="fa fa-sign-out"></i> Выйти
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Добро пожаловать, {{ user.username }}!</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="well">
+                                <h4><i class="fa fa-info-circle"></i> Ваши данные</h4>
+                                <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+                                <p><strong>Email:</strong> {{ user.email|default:"Не указан" }}</p>
+                                <p><strong>Имя:</strong> {{ user.first_name|default:"Не указано" }}</p>
+                                <p><strong>Фамилия:</strong> {{ user.last_name|default:"Не указано" }}</p>
+                                <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="well">
+                                <h4><i class="fa fa-shopping-cart"></i> Статистика</h4>
+                                <p><strong>Всего заказов:</strong> {{ user.order_set.count }}</p>
+                                <a href="{% url 'order_history' %}" class="btn btn-primary">
+                                    <i class="fa fa-history"></i> История заказов
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

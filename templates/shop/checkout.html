@@ -1,0 +1,120 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Оформление заказа - СтройМаркет{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li><a href="{% url 'cart' %}">Корзина</a></li>
+                <li class="active">Оформление заказа</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-user"></i> Информация для доставки</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="POST" action="{% url 'checkout' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Имя *</label>
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Фамилия *</label>
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Телефон *</label>
+                                    {{ form.phone }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Email *</label>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Город *</label>
+                                    {{ form.city }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Индекс *</label>
+                                    {{ form.postal_code }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Адрес доставки *</label>
+                            {{ form.address }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>Комментарий к заказу</label>
+                            {{ form.comment }}
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg btn-block">
+                            <i class="fa fa-check"></i> Подтвердить заказ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Ваш заказ</h3>
+                </div>
+                <div class="panel-body">
+                    {% for item in cart_items %}
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-8">
+                            {{ item.product.name }} x {{ item.quantity }}
+                        </div>
+                        <div class="col-md-4 text-right">
+                            {{ item.get_total_price }} ₽
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <strong>Итого:</strong>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <strong>{{ cart_total }} ₽</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

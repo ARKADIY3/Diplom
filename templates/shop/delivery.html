@@ -1,0 +1,75 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Доставка и оплата - СтройМаркет{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li class="active">Доставка и оплата</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2>Доставка и оплата</h2>
+                    <hr>
+
+                    <h3><i class="fa fa-truck"></i> Способы доставки</h3>
+                    <div class="well">
+                        <h4>Доставка курьером</h4>
+                        <p>Бесплатная доставка при заказе от 5000 ₽. Стоимость доставки при заказе до 5000 ₽ - 300 ₽.</p>
+                        <p>Время доставки: с 10:00 до 20:00 в будние дни.</p>
+                    </div>
+
+                    <div class="well">
+                        <h4>Самовывоз</h4>
+                        <p>Вы можете забрать заказ самостоятельно из нашего магазина по адресу: г. Москва, ул. Строителей, 15.</p>
+                        <p>Время работы: Пн-Пт 9:00-20:00, Сб-Вс 10:00-18:00.</p>
+                    </div>
+
+                    <div class="well">
+                        <h4>Доставка транспортной компанией</h4>
+                        <p>Отправляем заказы в регионы через СДЭК, DPD и другие ТК. Стоимость рассчитывается индивидуально.</p>
+                    </div>
+
+                    <h3><i class="fa fa-credit-card"></i> Способы оплаты</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fa fa-money" style="font-size: 48px;"></i>
+                                <h4>Наличные</h4>
+                                <p>При получении заказа</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fa fa-credit-card" style="font-size: 48px;"></i>
+                                <h4>Банковская карта</h4>
+                                <p>Visa, Mastercard, МИР</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fa fa-mobile" style="font-size: 48px;"></i>
+                                <h4>Онлайн-оплата</h4>
+                                <p>Через сайт по ссылке</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>Внимание!</strong> При заказе на сумму более 10000 ₽ требуется предоплата 30%.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

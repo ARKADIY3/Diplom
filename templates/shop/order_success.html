@@ -1,0 +1,56 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Заказ оформлен - СтройМаркет{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-check-circle"></i> Заказ успешно оформлен!</h3>
+                </div>
+                <div class="panel-body text-center">
+                    <div class="alert alert-success">
+                        <h3><i class="fa fa-check-circle"></i> Спасибо за ваш заказ!</h3>
+                        <p>Номер вашего заказа: <strong>#{{ order.id }}</strong></p>
+                        <p>На указанный email отправлено письмо с деталями заказа.</p>
+                    </div>
+
+                    <h4>Детали заказа:</h4>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Имя:</th>
+                            <td>{{ order.first_name }} {{ order.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Телефон:</th>
+                            <td>{{ order.phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>{{ order.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Адрес доставки:</th>
+                            <td>{{ order.city }}, {{ order.address }}, {{ order.postal_code }}</td>
+                        </tr>
+                        <tr>
+                            <th>Сумма заказа:</th>
+                            <td><strong>{{ order.total_price }} ₽</strong></td>
+                        </tr>
+                    </table>
+
+                    <a href="{% url 'index' %}" class="btn btn-primary">
+                        <i class="fa fa-home"></i> На главную
+                    </a>
+                    <a href="{% url 'catalog' %}" class="btn btn-success">
+                        <i class="fa fa-shopping-cart"></i> Продолжить покупки
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

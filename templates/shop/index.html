@@ -1,0 +1,440 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}СтройМаркет - интернет-магазин строительных материалов{% endblock %}
+
+{% block content %}
+
+<!-- Хиты продаж -->
+{% if bestsellers %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-fire text-danger"></i> Хиты продаж
+                    <span class="section-subtitle">Самые популярные товары</span>
+                </h2>
+            </div>
+            <div class="row">
+                {% for product in bestsellers %}
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-card__image">
+                            <a href="{% url 'product_detail' product.slug %}">
+                                <img src="{{ product.image_url|default:'https://placehold.co/300x300/FF6B6B/FFFFFF?text=Нет+фото' }}" alt="{{ product.name }}">
+                            </a>
+                            {% if product.is_bestseller %}
+                            <div class="product-badge bestseller">
+                                <i class="fas fa-fire"></i> Хит продаж
+                            </div>
+                            {% endif %}
+                            {% if product.is_new %}
+                            <div class="product-badge new">
+                                <i class="fas fa-gift"></i> Новинка
+                            </div>
+                            {% endif %}
+                            <div class="product-card__actions">
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="add-to-cart-btn">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </form>
+                                {% else %}
+                                <a href="{% url 'login' %}" class="add-to-cart-btn">
+                                    <i class="fas fa-sign-in-alt"></i> Войдите
+                                </a>
+                                {% endif %}
+                                <a href="{% url 'product_detail' product.slug %}" class="details-btn">
+                                    <i class="fas fa-eye"></i> Подробнее
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-card__content">
+                            <div class="product-category">{{ product.category.name }}</div>
+                            <h4 class="product-title">
+                                <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
+                            </h4>
+                            <div class="product-price">
+                                <span class="current-price">{{ product.price }} ₽</span>
+                                {% if product.old_price %}
+                                <span class="old-price">{{ product.old_price }} ₽</span>
+                                {% endif %}
+                            </div>
+                            {% if product.total_sold %}
+                            <div class="product-sold">
+                                <i class="fas fa-shopping-cart"></i> Продано: {{ product.total_sold }} шт.
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Новинки -->
+{% if new_products %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-gift text-success"></i> Новинки
+                    <span class="section-subtitle">Только что поступившие товары</span>
+                </h2>
+            </div>
+            <div class="row">
+                {% for product in new_products %}
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-card__image">
+                            <a href="{% url 'product_detail' product.slug %}">
+                                <img src="{{ product.image_url|default:'https://placehold.co/300x300/5CB85C/FFFFFF?text=Новинка' }}" alt="{{ product.name }}">
+                            </a>
+                            {% if product.is_bestseller %}
+                            <div class="product-badge bestseller">
+                                <i class="fas fa-fire"></i> Хит продаж
+                            </div>
+                            {% endif %}
+                            {% if product.is_new %}
+                            <div class="product-badge new">
+                                <i class="fas fa-gift"></i> Новинка
+                            </div>
+                            {% endif %}
+                            <div class="product-card__actions">
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="add-to-cart-btn">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </form>
+                                {% else %}
+                                <a href="{% url 'login' %}" class="add-to-cart-btn">
+                                    <i class="fas fa-sign-in-alt"></i> Войдите
+                                </a>
+                                {% endif %}
+                                <a href="{% url 'product_detail' product.slug %}" class="details-btn">
+                                    <i class="fas fa-eye"></i> Подробнее
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-card__content">
+                            <div class="product-category">{{ product.category.name }}</div>
+                            <h4 class="product-title">
+                                <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
+                            </h4>
+                            <div class="product-price">
+                                <span class="current-price">{{ product.price }} ₽</span>
+                                {% if product.old_price %}
+                                <span class="old-price">{{ product.old_price }} ₽</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+<style>
+    /* Стили для карточек товаров */
+    .product-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .product-card__image {
+        position: relative;
+        overflow: hidden;
+        background: #f5f5f5;
+    }
+
+    .product-card__image img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-card__image img {
+        transform: scale(1.05);
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 12px;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+        z-index: 2;
+    }
+
+    .product-badge.bestseller {
+        left: 12px;
+        background: linear-gradient(135deg, #ff7261, #ff4a3a);
+    }
+
+    .product-badge.new {
+        right: 12px;
+        background: linear-gradient(135deg, #5cb85c, #449d44);
+    }
+
+    .product-card__actions {
+        position: absolute;
+        bottom: -60px;
+        left: 0;
+        right: 0;
+        display: flex;
+        gap: 10px;
+        padding: 15px;
+        background: rgba(0,0,0,0.85);
+        transition: bottom 0.3s ease;
+        z-index: 3;
+    }
+
+    .product-card:hover .product-card__actions {
+        bottom: 0;
+    }
+
+    .add-to-cart-btn, .details-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .add-to-cart-btn {
+        background: #ff7261;
+        color: white;
+    }
+
+    .add-to-cart-btn:hover {
+        background: #e65a4a;
+        color: white;
+        transform: scale(1.02);
+    }
+
+    .details-btn {
+        background: #fff;
+        color: #333;
+    }
+
+    .details-btn:hover {
+        background: #f0f0f0;
+        color: #ff7261;
+        text-decoration: none;
+    }
+
+    .product-card__content {
+        padding: 15px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-category {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .product-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 10px;
+        line-height: 1.4;
+        min-height: 45px;
+    }
+
+    .product-title a {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .product-title a:hover {
+        color: #ff7261;
+    }
+
+    .product-price {
+        margin-bottom: 10px;
+    }
+
+    .current-price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff7261;
+    }
+
+    .old-price {
+        font-size: 14px;
+        color: #999;
+        text-decoration: line-through;
+        margin-left: 8px;
+    }
+
+    .product-sold {
+        font-size: 12px;
+        color: #5cb85c;
+        margin-top: auto;
+    }
+
+    /* Заголовки секций */
+    .section-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 15px;
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #ff7261, #ff4a3a);
+        border-radius: 2px;
+    }
+
+    .section-subtitle {
+        display: block;
+        font-size: 14px;
+        color: #999;
+        font-weight: normal;
+        margin-top: 8px;
+    }
+
+    /* Карточки преимуществ */
+    .advantages-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        padding: 30px;
+    }
+
+    .advantage-card {
+        text-align: center;
+        color: white;
+        padding: 20px;
+    }
+
+    .advantage-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .advantage-card h4 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .advantage-card p {
+        font-size: 14px;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .product-card__image img {
+            height: 200px;
+        }
+
+        .product-card__actions {
+            position: relative;
+            bottom: 0;
+            margin-top: 10px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            min-height: auto;
+        }
+
+        .current-price {
+            font-size: 18px;
+        }
+
+        .section-title {
+            font-size: 22px;
+        }
+
+        .advantage-icon {
+            font-size: 36px;
+        }
+
+        .advantage-card h4 {
+            font-size: 16px;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        $('.add-to-cart-form').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#cart-count').text(response.cart_count);
+                        alert('Товар добавлен в корзину!');
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

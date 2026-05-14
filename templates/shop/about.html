@@ -1,0 +1,71 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}О компании - СтройМаркет{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li class="active">О компании</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2>О компании "СтройМаркет"</h2>
+                    <hr>
+
+                    <p>Компания "СтройМаркет" - ваш надежный партнер в мире строительных материалов. Мы работаем на рынке с 2010 года и за это время заслужили доверие тысяч клиентов.</p>
+
+                    <h3>Наша миссия</h3>
+                    <p>Предоставлять качественные строительные материалы по доступным ценам с быстрой доставкой и профессиональной консультацией.</p>
+
+                    <h3>Почему выбирают нас?</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fa fa-check-circle" style="font-size: 48px; color: #5cb85c;"></i>
+                                <h4>Качество</h4>
+                                <p>Только проверенные товары от ведущих производителей</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fa fa-truck" style="font-size: 48px; color: #5bc0de;"></i>
+                                <h4>Быстрая доставка</h4>
+                                <p>Доставляем заказы по всей России</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fa fa-headphones" style="font-size: 48px; color: #f0ad4e;"></i>
+                                <h4>Поддержка</h4>
+                                <p>Квалифицированные консультации</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Наши преимущества</h3>
+                    <ul>
+                        <li>Широкий ассортимент (более 5000 товаров)</li>
+                        <li>Гибкая система скидок для оптовых клиентов</li>
+                        <li>Возврат товара в течение 14 дней</li>
+                        <li>Оплата при получении</li>
+                        <li>Собственная служба доставки</li>
+                    </ul>
+
+                    <div class="alert alert-info">
+                        <strong>Нужна помощь?</strong> Свяжитесь с нами по телефону <strong>+7 (999) 123-45-67</strong> или напишите на email <strong>info@stroymarket.ru</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

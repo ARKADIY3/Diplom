@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Стройматериалы - Интернет магазин{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- jQuery (подключаем в head) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- HEADER START -->
+    <header>
+        <div class="top-header" style="background: #2A3542; color: white; padding: 10px 0;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="logo">
+                            <h2 style="margin: 0; font-size: 24px;">
+                                <a href="{% url 'index' %}" style="color: white; text-decoration: none;">
+                                    <i class="fa fa-home"></i> СтройМаркет
+                                </a>
+                            </h2>
+                            <p style="margin: 0; font-size: 12px;">Все для строительства и ремонта</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <div class="header-contacts">
+                            <p style="margin: 0;">
+                                <i class="fa fa-phone"></i> +7 (999) 123-45-67<br>
+                                <i class="fa fa-envelope"></i> info@stroymarket.ru
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Навигационное меню -->
+        <nav class="navbar navbar-default" style="margin-bottom: 0; border-radius: 0;">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+                            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Главная</a>
+                        </li>
+                        <li class="{% if request.resolver_match.url_name == 'catalog' %}active{% endif %}">
+                            <a href="{% url 'catalog' %}"><i class="fa fa-list"></i> Каталог</a>
+                        </li>
+                        <li class="{% if request.resolver_match.url_name == 'delivery' %}active{% endif %}">
+                            <a href="{% url 'delivery' %}"><i class="fa fa-truck"></i> Доставка</a>
+                        </li>
+                        <li class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                            <a href="{% url 'about' %}"><i class="fa fa-info-circle"></i> О компании</a>
+                        </li>
+                        <li class="{% if request.resolver_match.url_name == 'contacts' %}active{% endif %}">
+                            <a href="{% url 'contacts' %}"><i class="fa fa-phone"></i> Контакты</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'cart' %}">
+                                <i class="fas fa-shopping-cart"></i> Корзина
+                                <span id="cart-count" class="badge bg-danger">{{ cart_count|default:0 }}</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i> {{ user.username }} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'profile' %}"><i class="fa fa-user"></i> Личный кабинет</a></li>
+                                <li><a href="{% url 'order_history' %}"><i class="fa fa-history"></i> История заказов</a></li>
+                                <li class="divider"></li>
+                                <li>
+                                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" style="background: none; border: none; padding: 3px 20px; display: block; width: 100%; text-align: left; cursor: pointer;">
+                                            <i class="fa fa-sign-out"></i> Выйти
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Вход</a></li>
+                        <li><a href="{% url 'register' %}"><i class="fa fa-user-plus"></i> Регистрация</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- HEADER END -->
+
+    <!-- MAIN CONTENT START -->
+    <main>
+        {% if messages %}
+        <div class="container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+    <!-- MAIN CONTENT END -->
+
+    <!-- FOOTER START -->
+    <footer style="background: #2A3542; color: #fff; padding: 40px 0 20px; margin-top: 40px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4><i class="fa fa-home"></i> СтройМаркет</h4>
+                    <p>Ваш надежный партнер в мире строительных материалов. Только качественные товары по доступным ценам.</p>
+                    <p><i class="fa fa-map-marker"></i> г. Москва, ул. Строителей, 15</p>
+                </div>
+                <div class="col-md-2">
+                    <h5>Категории</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'catalog' %}" style="color: #999;">Все товары</a></li>
+                        {% for category in categories %}
+                        <li><a href="{% url 'catalog' %}?category={{ category.slug }}" style="color: #999;">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Информация</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'about' %}" style="color: #999;">О компании</a></li>
+                        <li><a href="{% url 'delivery' %}" style="color: #999;">Доставка и оплата</a></li>
+                        <li><a href="{% url 'contacts' %}" style="color: #999;">Контакты</a></li>
+                        <li><a href="#" style="color: #999;">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Контакты</h5>
+                    <p><i class="fa fa-phone"></i> +7 (999) 123-45-67</p>
+                    <p><i class="fa fa-envelope"></i> info@stroymarket.ru</p>
+                    <p><i class="fa fa-clock-o"></i> Пн-Пт: 9:00 - 20:00<br>Сб-Вс: 10:00 - 18:00</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center" style="border-top: 1px solid #3a4752; padding-top: 20px; margin-top: 20px;">
+                    <p>&copy; 2024 СтройМаркет. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER END -->
+
+    <!-- Основной скрипт -->
+    <script>
+        $(document).ready(function() {
+            // AJAX добавление в корзину
+            $('.add-to-cart-form').on('submit', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    method: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#cart-count').text(response.cart_count);
+                            alert('Товар добавлен в корзину!');
+                        }
+                    },
+                    error: function() {
+                        alert('Ошибка при добавлении товара');
+                    }
+                });
+            });
+
+            // Обновление количества в корзине
+            $('.update-cart-form').on('submit', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    method: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
