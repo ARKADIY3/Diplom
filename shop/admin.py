@@ -2,6 +2,14 @@ from django.contrib import admin
 from .models import Category, Product, Slider, Characteristic, ProductCharacteristic
 
 
+class ProductCharacteristicInline(admin.TabularInline):
+    model = ProductCharacteristic
+    extra = 3
+    fields = ['characteristic', 'value']
+    verbose_name = 'Характеристика'
+    verbose_name_plural = 'Характеристики товара'
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
@@ -16,6 +24,16 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category', 'is_bestseller', 'is_new', 'in_stock')
     search_fields = ('name', 'description')
     list_editable = ('price', 'is_bestseller', 'is_new', 'in_stock')
+    inlines = [ProductCharacteristicInline]  # Важно! Добавляем характеристики в товар
+
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('name', 'slug', 'category', 'description', 'price', 'image_url')
+        }),
+        ('Статус', {
+            'fields': ('is_bestseller', 'is_new', 'in_stock')
+        }),
+    )
 
 
 @admin.register(Slider)
@@ -63,3 +81,5 @@ class ProductCharacteristicAdmin(admin.ModelAdmin):
     list_display = ('product', 'characteristic', 'value')
     list_filter = ('product__category', 'characteristic')
     search_fields = ('product__name', 'characteristic__name', 'value')
+
+

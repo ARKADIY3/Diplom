@@ -48,10 +48,10 @@
                 <p>{{ product.description|linebreaks }}</p>
             </div>
 
-            <!-- Характеристики -->
-            {% if characteristics %}
+            <!-- Характеристики товара -->
             <div class="description" style="margin-top: 20px;">
                 <h4>Характеристики:</h4>
+                {% if characteristics %}
                 <table class="table table-bordered">
                     {% for char in characteristics %}
                     <tr>
@@ -60,8 +60,10 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% else %}
+                <p class="text-muted">Характеристики не указаны</p>
+                {% endif %}
             </div>
-            {% endif %}
 
             <div class="form-group" style="margin-top: 20px;">
                 <label>Количество:</label>
@@ -110,15 +112,15 @@
             <div class="row product-list">
                 {% for related in related_products %}
                 <div class="col-md-3 col-sm-6">
-                    <section class="panel">
-                        <div class="pro-img-box">
+                    <div class="product-card">
+                        <div class="product-card__image">
                             <a href="{% url 'product_detail' related.slug %}">
                                 <img src="{{ related.image_url|default:'https://placehold.co/250x220/FF6B6B/FFFFFF?text=Нет+фото' }}"
                                      alt="{{ related.name }}"
                                      style="height:150px; width:100%; object-fit:cover;">
                             </a>
                         </div>
-                        <div class="panel-body text-center">
+                        <div class="product-card__content">
                             <h4>
                                 <a href="{% url 'product_detail' related.slug %}" class="pro-title">
                                     {{ related.name }}
@@ -126,7 +128,7 @@
                             </h4>
                             <p class="price">{{ related.price }} ₽</p>
                         </div>
-                    </section>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -134,6 +136,55 @@
     </div>
     {% endif %}
 </div>
+
+<style>
+    .product-card {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .product-card__image {
+        overflow: hidden;
+    }
+
+    .product-card__image img {
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-card__image img {
+        transform: scale(1.05);
+    }
+
+    .product-card__content {
+        padding: 12px;
+        text-align: center;
+    }
+
+    .price {
+        color: #ff7261;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .pro-title {
+        font-size: 14px;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .pro-title:hover {
+        color: #ff7261;
+    }
+</style>
+
 {% endblock %}
 
 {% block extra_js %}

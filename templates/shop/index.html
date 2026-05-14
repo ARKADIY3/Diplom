@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="section-header">
                 <h2 class="section-title">
-                    <i class="fas fa-fire text-danger"></i> Хиты продаж
+                     Хиты продаж
                     <span class="section-subtitle">Самые популярные товары</span>
                 </h2>
             </div>
@@ -26,12 +26,12 @@
                             </a>
                             {% if product.is_bestseller %}
                             <div class="product-badge bestseller">
-                                <i class="fas fa-fire"></i> Хит продаж
+                                Хит продаж
                             </div>
                             {% endif %}
                             {% if product.is_new %}
                             <div class="product-badge new">
-                                <i class="fas fa-gift"></i> Новинка
+                                Новинка
                             </div>
                             {% endif %}
                             <div class="product-card__actions">
@@ -41,7 +41,7 @@
                                     <input type="hidden" name="product_id" value="{{ product.id }}">
                                     <input type="hidden" name="quantity" value="1">
                                     <button type="submit" class="add-to-cart-btn">
-                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                        В корзину
                                     </button>
                                 </form>
                                 {% else %}

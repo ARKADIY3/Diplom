@@ -120,7 +120,11 @@ def product_detail(request, slug):
     """Детальная страница товара"""
     product = get_object_or_404(Product, slug=slug, in_stock=True)
     sales_count = product.get_sales_count()
+
+    # Получаем характеристики товара
     characteristics = ProductCharacteristic.objects.filter(product=product).select_related('characteristic')
+
+    # Похожие товары
     related_products = Product.objects.filter(
         category=product.category,
         in_stock=True
